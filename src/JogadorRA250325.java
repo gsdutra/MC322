@@ -58,18 +58,7 @@ public class JogadorRA250325 extends Jogador {
 		ArrayList<Jogada> minhasJogadas = new ArrayList<Jogada>();
 		
 		// O laço abaixo cria jogas de baixar lacaios da mão para a mesa se houver mana disponível.
-/*		for(int i = 0; i < mao.size(); i++){
-			Carta card = mao.get(i);
-			if(card instanceof CartaLacaio && card.getMana() <= minhaMana){
-				Jogada lac = new Jogada(TipoJogada.LACAIO, card, null);
-				minhasJogadas.add(lac);
-				minhaMana -= card.getMana();
-				System.out.println("Jogada: Decidi uma jogada de baixar o lacaio: "+ card);
-				mao.remove(i);
-				i--;
-			}
-		}
-		*/
+
 		System.out.println("\n\nInformações pré turno: \nMão Jogador: "+ mao + "\nLacaios Jogador: "+ lacaios + "\nLacaios Oponente: " + lacaiosOponente + "\n\n");
 
 		//Obtendo informações para a tomada de decisão da jogada
@@ -89,14 +78,14 @@ public class JogadorRA250325 extends Jogador {
 		if (false){
 			if(listaLacsOponente.size() >= 5)
 				return comportamentoControle(mesa, cartaComprada, jogadasOponente, minhasJogadas, minhaMana, minhaVida, lacaios, lacaiosOponente);
-			if(vidaHinim >= 17)
+			if(vidaHinim >= 18)
 				return comportamentoCurvaDeMana(mesa, cartaComprada, jogadasOponente, minhasJogadas, minhaMana, minhaVida, lacaios, lacaiosOponente);
-			if(vidaHinim < 17)
+			if(vidaHinim < 18)
 				return comportamentoAgressivo(mesa, cartaComprada, jogadasOponente, minhasJogadas, minhaMana, minhaVida, lacaios, lacaiosOponente);
 			
 			return comportamentoCurvaDeMana(mesa, cartaComprada, jogadasOponente, minhasJogadas, minhaMana, minhaVida, lacaios, lacaiosOponente);
 		}
-		return comportamentoAgressivo(mesa, cartaComprada, jogadasOponente, minhasJogadas, minhaMana, minhaVida, lacaios, lacaiosOponente);
+		return comportamentoControle(mesa, cartaComprada, jogadasOponente, minhasJogadas, minhaMana, minhaVida, lacaios, lacaiosOponente);
 		
 		//return minhasJogadas;
 	}
@@ -123,13 +112,10 @@ public class JogadorRA250325 extends Jogador {
 				}
 			}
 			listaCartasOrdenada.add(mao.get(cartaIndex));
-		}
-		System.out.println("Lista cartas ordenada: " + listaCartasOrdenada);
-		//Baixa todas as cartas com a mana disponível (exceto magias buff)
-		for (int i = 0; i < mao.size(); i++) {
-			if (minhaMana >= listaCartasOrdenada.get(i).getMana()){
-				Carta card = listaCartasOrdenada.get(i);
-				if (listaCartasOrdenada.get(i) instanceof CartaLacaio){
+
+			if (minhaMana >= mao.get(cartaIndex).getMana()){
+				Carta card = mao.get(cartaIndex);
+				if (mao.get(cartaIndex) instanceof CartaLacaio){
 					Jogada lac = new Jogada(TipoJogada.LACAIO, card, null);
 					System.out.println("Baixei o lacaio: "+ card);
 					minhasJogadas.add(lac);

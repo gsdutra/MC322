@@ -103,49 +103,52 @@ public class JogadorRA250325 extends Jogador {
 
 	public ArrayList<Jogada> comportamentoAgressivo(Mesa mesa, Carta cartaComprada, ArrayList<Jogada> jogadasOponente, ArrayList<Jogada> minhasJogadas, int mana, int vida, ArrayList<CartaLacaio> lacaios, ArrayList<CartaLacaio> lacaiosOponente){
 
-		//Primeiramente compra todas as cartas mais baratas com a Mana disponível e, logo em seguida, utiliza todas as cartas para atacar o Herói adversário.
+		//Primeiramente compra todas as cartas mais baratas com a Mana disponível (exceto magias de buff) e, logo em seguida, utiliza todas as cartas para atacar o Herói adversário.
 
 		int minhaMana = mana;
 
-		int lacaioAtual = 0;
-		int lacaioIndex = 0;
+		int cartaIndex = 0;
+
+		//Ordena as cartas por mana (crescente)
+		ArrayList<Carta> listaCartasOrdenada = new ArrayList<>();
 
 		for (int i = 0; i < mao.size(); i++) {
-			Carta card = mao.get(i);
-		}
 
-		//Seleciona o lacaio com maior ataque
-		/*for (int i = 0; i < mao.size(); i++) {
-			if (mao.get(i) instanceof CartaLacaio){
-				CartaLacaio carta = (CartaLacaio) mao.get(i);
-				if (carta.getAtaque() > lacaioAtual){
-					lacaioMAIndex = i;
+			int manaMenor = 8;
+			for (int j = 0; j < mao.size(); j++) {
+
+				if (mao.get(j).getMana() <= manaMenor && !listaCartasOrdenada.contains(mao.get(j))){
+					cartaIndex = j;
+					manaMenor = mao.get(j).getMana();
 				}
 			}
-		}*/
-		//Baixa todas as cartas com a mana disponível
-		ArrayList<Carta> listaCartasOrdenada;
+			listaCartasOrdenada.add(mao.get(cartaIndex));
+		}
+		System.out.println("Lista cartas ordenada: " + listaCartasOrdenada);
+		//Baixa todas as cartas com a mana disponível (exceto magias buff)
 		for (int i = 0; i < mao.size(); i++) {
-			for (int j = 0; j < mao.size(); j++) {
-				
-				if (mao.get(i) instanceof CartaLacaio){
-					CartaLacaio carta = (CartaLacaio) mao.get(i);
-					if (carta.getAtaque() > lacaioAtual){
-						lacaioIndex = i;
+			if (minhaMana >= listaCartasOrdenada.get(i).getMana()){
+				Carta card = listaCartasOrdenada.get(i);
+				if (listaCartasOrdenada.get(i) instanceof CartaLacaio){
+					Jogada lac = new Jogada(TipoJogada.LACAIO, card, null);
+					System.out.println("Baixei o lacaio: "+ card);
+					minhasJogadas.add(lac);
+					minhaMana -= card.getMana();
+					mao.remove(cartaIndex);
+				}else{
+					CartaMagia cardM = (CartaMagia) card;
+					if (cardM.getMagiaTipo() != TipoMagia.BUFF){
+						Jogada mag = new Jogada(TipoJogada.MAGIA, card, null);
+						System.out.println("Usei a magia: "+ card);
+						minhasJogadas.add(mag);
+						minhaMana -= card.getMana();
+						mao.remove(cartaIndex);
 					}
 				}
-
 			}
 		}
-		Carta card = mao.get(lacaioIndex);
 
-		Jogada lac = new Jogada(TipoJogada.LACAIO, card, null);
-
-		if (minhaMana >= card.getMana()){
-			minhasJogadas.add(lac);
-			minhaMana -= card.getMana();
-			mao.remove(lacaioIndex);
-		}
+		//Ataca com os lacaios disponíveis
 		for (int i = 0; i < lacaios.size(); i++) {
 			Jogada atq = new Jogada(TipoJogada.ATAQUE, lacaios.get(i), null);
 			minhasJogadas.add(atq);

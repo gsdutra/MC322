@@ -79,11 +79,6 @@ public class JogadorRA250325 extends Jogador {
 		lacaios = new ArrayList<CartaLacaio>();
 		lacaiosOponente = new ArrayList<CartaLacaio>();
 		
-		// Mensagens de depuração:
-		System.out.println("*Classe JogadorRAxxxxxx* Sou o " + (primeiro?"primeiro":"segundo") + " jogador (classe: JogadorAleatorio)");
-		System.out.println("Mao inicial:");
-		for(int i = 0; i < mao.size(); i++)
-			System.out.println("ID " + mao.get(i).getID() + ": " + mao.get(i));
 	}
 	
 	/**
@@ -119,7 +114,7 @@ public class JogadorRA250325 extends Jogador {
 		
 		// O laço abaixo cria jogas de baixar lacaios da mão para a mesa se houver mana disponível.
 
-		System.out.println("\n\nInformações pré turno: \nMão Jogador: "+ mao + "\nLacaios Jogador: "+ lacaios + "\nLacaios Oponente: " + lacaiosOponente + "\n\n");
+		//System.out.println("\n\nInformações pré turno: \nMão Jogador: "+ mao + "\nLacaios Jogador: "+ lacaios + "\nLacaios Oponente: " + lacaiosOponente + "\n\n");
 
 		//Obtendo informações para a tomada de decisão da jogada
 
@@ -303,7 +298,7 @@ public class JogadorRA250325 extends Jogador {
 				Carta card = mao.get(cartaIndex);
 				if (mao.get(cartaIndex) instanceof CartaLacaio){
 					Jogada lac = new Jogada(TipoJogada.LACAIO, card, null);
-					System.out.println("Baixei o lacaio: "+ card);
+					//System.out.println("Baixei o lacaio: "+ card);
 					minhasJogadas.add(lac);
 					minhaMana -= card.getMana();
 					mao.remove(cartaIndex);
@@ -321,7 +316,7 @@ public class JogadorRA250325 extends Jogador {
 					for (int j = 0; j < lacaiosOponente.size(); j++) {
 						if (lacaiosOponente.get(j).getVidaAtual() <= cardM.getMagiaDano()){
 							Jogada mag = new Jogada(TipoJogada.MAGIA, card, lacaiosOponente.get(j));
-							System.out.println("Usei a magia: "+ card);
+							//System.out.println("Usei a magia: "+ card);
 							minhasJogadas.add(mag);
 							minhaMana -= card.getMana();
 							mao.remove(cartaIndex);
